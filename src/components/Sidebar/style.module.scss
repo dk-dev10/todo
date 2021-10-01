@@ -1,0 +1,43 @@
+.listItemLink {
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  width: 100%;
+  transition: all 0.4s ease-in;
+
+  button {
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+
+  &:hover > button {
+    opacity: 1;
+  }
+}
+
+.input {
+  label {
+    color: #fff !important;
+  }
+
+  div:before,
+  div:after {
+    border-color: #fff !important;
+  }
+
+  input {
+    color: #fff;
+  }
+}
+
+.empty {
+  opacity: 0.3;
+}
+
+.btn {
+  span {
+    color: #222 !important;
+  }
+}
