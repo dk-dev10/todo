@@ -6,14 +6,24 @@
   text-decoration: none;
   width: 100%;
   transition: all 0.4s ease-in;
+  color: #fff;
 
-  button {
+  div {
     opacity: 0;
     transition: all 0.4s ease;
   }
 
-  &:hover > button {
+  &:hover > div {
     opacity: 1;
+
+    button {
+      color: #fff;
+
+
+      &:hover {
+        color: dodgerblue;
+      }
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import {
   Button,
@@ -13,7 +13,9 @@ import {
 } from '@material-ui/core';
 import { Box } from '@mui/system';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { CREATE_GROUP, REMOVE_GROUP } from '../../redux/types';
+import EditIcon from '@material-ui/icons/Edit';
+import { CREATE_GROUP, REMOVE_GROUP, RENAME_GROUP } from '../../redux/types';
+import Modal from '../Modal';
 
 import style from './style.module.scss';
 
@@ -22,25 +24,61 @@ const Sidebar = () => {
   const groups = useSelector((state) => state.groups.groups);
 
   const [value, setVal] = useState('');
+  const [modal, setModal] = useState(false);
+  const [grpTtl, setGrpTtl] = useState('');
+  const [grpRmv, setGrpRmv] = useState(false);
+  const [rmv, setRmv] = useState(null);
+  const [rnm, setRnm] = useState(null);
+
+  const history = useHistory();
 
   function onAdd() {
+    const id = Date.now();
     if (!!value) {
       dispatch({
         type: CREATE_GROUP,
-        payload: { title: value, id: Date.now() },
+        payload: { title: value, id },
       });
       setVal('');
+      history.push(`/${id}`);
     }
   }
 
-  function onRemove(id) {
-    dispatch({ type: REMOVE_GROUP, payload: id });
+  function onRemove(id, title) {
+    setGrpTtl(title);
+    setGrpRmv(true);
+    setModal(true);
+    setRmv(id);
+  }
+
+  function onRename(id, title) {
+    setGrpTtl(title);
+    setGrpRmv(false);
+    setModal(true);
+    setRnm({ id, title });
+  }
+
+  function getRes(res, val, remove) {
+    setModal(false);
+
+    if (remove) {
+      if (res) {
+        dispatch({ type: REMOVE_GROUP, payload: rmv });
+        if (rmv === +history.location.pathname.split('/')[1]) {
+          history.push('/');
+        }
+      }
+    } else {
+      if (res) {
+        dispatch({ type: RENAME_GROUP, payload: { ...rnm, title: val } });
+      }
+    }
   }
 
   return (
     <Box sx={{ width: 1 / 4, height: '100vh', bgcolor: '#363d4e' }}>
       <Box sx={{ my: 3, mx: 2 }}>
-        <h2>Группы </h2>
+        <h2 className='todoAppTitle'>Группы </h2>
       </Box>
       <Divider />
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -56,9 +94,14 @@ const Sidebar = () => {
               <ListItem style={style.listItem} key={gr.id}>
                 <Link className={style.listItemLink} to={`/${gr.id}`}>
                   {gr.title}
-                  <IconButton onClick={() => onRemove(gr.id)}>
-                    <DeleteIcon />
-                  </IconButton>
+                  <div>
+                    <IconButton onClick={() => onRename(gr.id, gr.title)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => onRemove(gr.id, gr.title)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
                 </Link>
               </ListItem>
             ))}
@@ -91,6 +134,9 @@ const Sidebar = () => {
           Добавить
         </Button>
       </Box>
+      {modal && (
+        <Modal active={modal} getRes={getRes} remove={grpRmv} title={grpTtl} />
+      )}
     </Box>
   );
 };

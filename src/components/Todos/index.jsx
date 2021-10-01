@@ -6,7 +6,7 @@ const Todos = () => {
   return (
     <Box sx={{ width: 3 / 4 }}>
       <Box sx={{ my: 3, mx: 2 }}>
-        <h2>Задачи из группы</h2>
+        <h2 className='todoAppTitle'>Задачи из группы</h2>
       </Box>
       <Divider light={true} />
     </Box>

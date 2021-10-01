@@ -13,6 +13,6 @@ code {
     monospace;
 }
 
-* {
+.todoAppTitle {
   color: #fff;
 }

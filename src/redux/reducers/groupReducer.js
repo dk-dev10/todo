@@ -1,4 +1,4 @@
-import { CREATE_GROUP, REMOVE_GROUP } from '../types';
+import { CREATE_GROUP, REMOVE_GROUP, RENAME_GROUP } from '../types';
 
 const storage = localStorage['groups']
   ? JSON.parse(localStorage.getItem('groups'))
@@ -18,13 +18,24 @@ export const groupReducer = (state = initialState, action) => {
         groups,
       };
     case REMOVE_GROUP:
-      const groupsRemove = state.groups.filter(
+      const groupRemove = state.groups.filter(
         ({ id }) => id !== action.payload
       );
-      localStorage.setItem('groups', JSON.stringify(groupsRemove));
+      localStorage.setItem('groups', JSON.stringify(groupRemove));
       return {
         ...state,
-        groups: groupsRemove,
+        groups: groupRemove,
+      };
+    case RENAME_GROUP:
+      const groupRename = state.groups.map((group) => ({
+        ...group,
+        title:
+          group.id === action.payload.id ? action.payload.title : group.title,
+      }));
+      localStorage.setItem('groups', JSON.stringify(groupRename));
+      return {
+        ...state,
+        groups: groupRename,
       };
     default:
       return state;
