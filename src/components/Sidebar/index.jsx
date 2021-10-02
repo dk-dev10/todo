@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
+import classnames from 'classnames';
 
 import {
   Button,
@@ -19,9 +20,12 @@ import Modal from '../Modal';
 
 import style from './style.module.scss';
 
+const cn = classnames.bind(style);
+
 const Sidebar = () => {
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.groups.groups);
+  const active = useSelector((state) => state.menu);
 
   const [value, setVal] = useState('');
   const [modal, setModal] = useState(false);
@@ -40,7 +44,7 @@ const Sidebar = () => {
         payload: { title: value, id },
       });
       setVal('');
-      history.push(`/${id}`);
+      history.push(`/todo/${id}`);
     }
   }
 
@@ -65,7 +69,7 @@ const Sidebar = () => {
       if (res) {
         dispatch({ type: REMOVE_GROUP, payload: rmv });
         if (rmv === +history.location.pathname.split('/')[1]) {
-          history.push('/');
+          history.push('/todo/');
         }
       }
     } else {
@@ -76,23 +80,27 @@ const Sidebar = () => {
   }
 
   return (
-    <Box sx={{ width: 1 / 4, height: '100vh', bgcolor: '#363d4e' }}>
+    <Box
+      sx={{
+        width: { md: 2 / 5, sm: 4 / 5 },
+        bgcolor: '#363d4e',
+      }}
+      className={cn(style.sidebar, active ? style.sidebarActive : null)}
+    >
       <Box sx={{ my: 3, mx: 2 }}>
         <h2 className='todoAppTitle'>Группы </h2>
+        <Divider />
       </Box>
-      <Divider />
-      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <Box className={style.list}>
         {!groups.length ? (
           <Box sx={{ my: 3, mx: 2 }}>
             <h3 className={style.empty}>Пусто</h3>
           </Box>
         ) : (
-          <List
-            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-          >
+          <List>
             {groups.map((gr) => (
               <ListItem style={style.listItem} key={gr.id}>
-                <Link className={style.listItemLink} to={`/${gr.id}`}>
+                <Link className={style.listItemLink} to={`/todo/${gr.id}`}>
                   {gr.title}
                   <div>
                     <IconButton onClick={() => onRename(gr.id, gr.title)}>

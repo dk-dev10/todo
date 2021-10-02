@@ -1,0 +1,42 @@
+.form {
+  display: flex;
+  align-items: flex-end;
+}
+
+.btn {
+  width: 20% !important;
+  span {
+    color: #222 !important;
+  }
+
+  span {
+    @media screen and (max-width: 900px) {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.input {
+  label {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  div:before,
+  div:after {
+    border-color: #fff !important;
+  }
+
+  input {
+    color: #fff;
+  }
+}
+
+.todoItem {
+  display: flex;
+
+  color: #fff;
+
+  span {
+    color: #fff;
+  }
+}
