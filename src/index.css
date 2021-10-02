@@ -16,3 +16,22 @@ code {
 .todoAppTitle {
   color: #fff;
 }
+.menuBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 30px;
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  z-index: 10;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+@media screen and (max-width: 900px) {
+  .menuBtn {
+    display: flex;
+  }
+}

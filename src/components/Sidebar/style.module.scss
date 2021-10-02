@@ -1,3 +1,34 @@
+.sidebar {
+  z-index: 5;
+  transition: right 0.4s ease;
+  height: 100vh;
+
+  @media screen and (max-width: 900px) {
+    position: absolute;
+    right: -100%;
+    width: 100vw;
+    // display: none;
+    // transform: translateX();
+  }
+
+  &Active {
+    right: 0%;
+  }
+}
+
+.list {
+  height: 70%;
+
+  @media screen and (max-width: 900px) {
+    height: 60%;
+  }
+
+  ul {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
 .listItemLink {
   font-size: 20px;
   display: flex;
@@ -19,9 +50,18 @@
     button {
       color: #fff;
 
-
       &:hover {
         color: dodgerblue;
+      }
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    div {
+      opacity: 1;
+
+      button {
+        color: #fff;
       }
     }
   }
@@ -29,7 +69,7 @@
 
 .input {
   label {
-    color: #fff !important;
+    color: rgba(255, 255, 255, 0.4) !important;
   }
 
   div:before,
